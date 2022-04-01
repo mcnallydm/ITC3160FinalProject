@@ -45,7 +45,7 @@ def print_query(headings, query_output):
             if idx==0:
                 output += str(row[idx])
             else:
-                output += "\t" + str(row[idx])
+                output += "\t\t" + str(row[idx])
         output += "\n"
     output = output[0:len(output)-1]
     print(output)
