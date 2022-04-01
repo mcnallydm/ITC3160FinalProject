@@ -11,12 +11,25 @@ try:
     #print("Login to ", loginInfo, " was successful")
 except:
     print("Login failed.")
-#define always your connection cursor
+
+def print_query(statement):
+    output = ""
+    for row in results:
+        for idx in range(0, len(row)):
+            if idx==0:
+                output += str(row[idx])
+            else:
+                output += " " + str(row[idx])
+        print(output)
+        output = ""
+
+# Always define your connection cursor to be able to fetch data from the db
 cursor = connection.cursor()
 
-#How to select data from the database
+# How to select data from the database
+# Define and execute your select statement
 results = cursor.execute("SELECT employee_id, last_name, first_name, salary FROM dara_emp")
-for row in results:
-    print(row[0], row[1], row[2], row[3])
+
+print_query(results)
 
 #TODO: Run "pip install cx_Oracle"
