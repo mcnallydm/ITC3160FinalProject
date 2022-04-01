@@ -14,14 +14,38 @@ except:
     print("Login failed.")
     connected = 0
 
-def print_query(query_output):
+def get_headers(ipt):
+    headers = []
+    select_arr = ipt.strip()
+    select_arr = ipt.split(" ")
+    item = ""
+    for j in range(1, len(select_arr)):
+        item = select_arr[j].lower()
+        if item=="from":
+            break
+        else:
+            if select_arr[j+1].lower()!="from":
+                item = item[0:len(item)-1]
+            if item!="select":
+                headers.append(item)
+    return headers
+
+def print_query(headings, query_output):
+    print("Printing Query...")
     output = ""
+    for i in range(0, len(headings)):
+        if i==0:
+            output += headings[i].upper()
+        else:
+            output += "\t" + headings[i].upper()
+    output += "\n"
+
     for row in (query_output):
         for idx in range(0, len(row)):
             if idx==0:
                 output += str(row[idx])
             else:
-                output += " " + str(row[idx])
+                output += "\t" + str(row[idx])
         output += "\n"
     output = output[0:len(output)-1]
     print(output)
@@ -33,8 +57,11 @@ if connected:
     # How to select data from the database
     # Define and execute your select statement
     select_statement = "SELECT employee_id, last_name, first_name, salary FROM dara_emp"
+
+    labels = get_headers(select_statement)
+    print(labels)
     results = cursor.execute(select_statement)
 
-    print_query(results)
+    print_query(labels, results)
 
 #TODO: Run "pip install cx_Oracle"
