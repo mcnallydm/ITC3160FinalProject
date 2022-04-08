@@ -1,0 +1,57 @@
+SELECT * FROM chevy_suvs;
+
+ID      AGENCY  PLATE           BRAND           CLASS
+8       8       2135-4675       Chevrolet       SUV  
+12      10      5782-4566       Chevrolet       SUV
+------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM rental_history;
+
+VEHICLE AGENCY  CUSTOMER ID     VEHICLE CLASS   START DATE              END DATE                RETURN DATE
+8       8       4489782         SUV             2022-05-23 00:00:00     2023-04-19 00:00:00     None
+10      9       3767569         sedan           2022-01-01 00:00:00     2022-12-31 00:00:00     None
+11      9       866758          minivan         2022-04-06 15:38:11     2022-06-01 00:00:00     2022-06-01 00:00:00
+13      10      3478556         sedan           2022-06-06 00:00:00     2022-07-15 00:00:00     None
+13      10      866758          sedan           2022-03-01 00:00:00     2022-04-01 00:00:00     None
+14      11      3767569         sedan           2022-06-01 00:00:00     2045-12-15 00:00:00     None
+------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM full_rental_history;
+
+VEHICLE AGENCY  CUSTOMER ID     VEHICLE CLASS   START DATE              END DATE                RETURN DATE
+8       8       4489782         SUV             2022-05-23 00:00:00     2023-04-19 00:00:00     None
+9       8       None            coup            None                    None                    None
+10      9       3767569         sedan           2022-01-01 00:00:00     2022-12-31 00:00:00     None
+11      9       866758          minivan         2022-04-06 15:38:11     2022-06-01 00:00:00     2022-06-01 00:00:00
+12      10      None            SUV             None                    None                    None
+13      10      3478556         sedan           2022-06-06 00:00:00     2022-07-15 00:00:00     None
+13      10      866758          sedan           2022-03-01 00:00:00     2022-04-01 00:00:00     None
+14      11      3767569         sedan           2022-06-01 00:00:00     2045-12-15 00:00:00     None
+15      11      None            minivan         None                    None                    None
+------------------------------------------------------------------------------------------------------------------------
+SELECT * FROM longrates;
+
+CLASS   RATE
+SUV     $ 5500/month
+COUP    $ 6400/month
+MINIVAN $ 5750/month
+SEDAN   $ 4200/month
+------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM most_profitable;
+
+CLASS   RATE
+COUP    $ 6400/month
+MINIVAN $ 5750/month
+------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM return_price;
+
+VEHICLE CLASS   CLIENT          COST    DATE RETURNED
+11      MINIVAN George Horas    $ 18113 01 June      2022
+------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM longest_lease;
+
+RENTAL  START DATE      END DATE        DURATION        CLIENT
+3       01/06/2022      15/12/2045      8598 days       Alex Schmetz

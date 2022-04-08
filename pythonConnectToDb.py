@@ -9,25 +9,24 @@ connection_string = username + "/" + password + database
 connected = 1
 try:
     cx_Oracle.init_oracle_client(lib_dir=r"C:\Programs\oracleClient")
-    #connection = cx_Oracle.connect('hr/oracle@itc3260.acgadmin.edu:1521/orcl')
     connection = cx_Oracle.connect(connection_string)
-    #print("Login to ", loginInfo, " was successful")
 except:
     print("Login failed.")
     connected = 0
 
 def tabs(data):
-    # data is an array
-    #print(data)
+    # data is an array (of headers)
     tabs_needed = 0
     no_tabs=[1] * len(data)
     for attribute_idx in range(0, len(data)):
         tabs_needed = trunc(len(data[attribute_idx])/8)+1
+        # 8 spaces make up a tab, but if the string is exactly 8 characters long, for clarity, a tab needs to be added
         if tabs_needed>no_tabs[attribute_idx]:
             no_tabs[attribute_idx] = tabs_needed
+    # Returns the number of tabs needed between the columns
     return no_tabs
 
-def print_query(headings, query_output):
+def print_query(headings, query_output):    # Prints a nicely formatted query with the given headings and data
     print("Printing Query...\n")
     q = []
     output = ""
@@ -36,20 +35,22 @@ def print_query(headings, query_output):
     qtemp = [] 
     t = 0
     for row in query_output:
+        # Casts the query data to a string and appends it to a matrix for later display
+        # Additionally calculates the number of tabs necessary to ensure proper spacing
         for idx in range(0, len(row)):
-            dpt = str(row[idx])
+            dpt = str(row[idx]) # Casts the raw data to a string
             qtemp.append(dpt)
             t = trunc(len(dpt)/8)+1
             if t>num_tabs[idx]:
                 num_tabs[idx] = t
-        q.append(qtemp)
+        q.append(qtemp) # Appends entire row to matrix
         qtemp = []
 
     for i in range(0, len(headings)):
         if i==0:
             output += headings[i].upper()
         else:
-            output += "\t"*(num_tabs[i-1] - (trunc(len(headings[i-1])/8))) + headings[i].upper()
+            output += "\t"*(num_tabs[i-1] - (trunc(len(headings[i-1])/8))) + headings[i].upper()    # The math makes sure the columns are properly spaced
     output += "\n"
 
     for row in q:
@@ -58,7 +59,7 @@ def print_query(headings, query_output):
                 output += row[idx]
             else:
                 
-                output += "\t"*(num_tabs[idx-1] - (trunc(len(row[idx-1])/8))) + row[idx]
+                output += "\t"*(num_tabs[idx-1] - (trunc(len(row[idx-1])/8))) + row[idx]    # The math makes sure the columns are properly spaced
         output += "\n"
     output = output[0:len(output)-1]
     print(output)
@@ -67,15 +68,7 @@ def run(labels, select_statement):
     try:
         # Always define your connection cursor to be able to fetch data from the db
         cursor = connection.cursor()
-
-        # How to select data from the database
-        # Define and execute your select statement
-        #select_statement = "SELECT * FROM rental_history"
-
-        #labels = get_headers(select_statement)
-        #print(labels)
         results = cursor.execute(select_statement)
-
         print_query(labels, results)
     except:
         pass
@@ -97,7 +90,6 @@ if connected:
             go = False
         elif to_do=="1":
             to_run = "SELECT * FROM chevy_suvs"
-            #print(to_run)
             lab = ["id", "agency", "plate", "brand", "class"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
@@ -106,7 +98,6 @@ if connected:
                 go = False
         elif to_do=="2":
             to_run = "SELECT * FROM rental_history"
-            #print(to_run)
             lab = ["vehicle", "agency", "customer id", "vehicle class", "start date", "end date", "return date"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
@@ -115,7 +106,6 @@ if connected:
                 go = False
         elif to_do=="3":
             to_run = "SELECT * FROM full_rental_history"
-            #print(to_run)
             lab = ["vehicle", "agency", "customer id", "vehicle class", "start date", "end date", "return date"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
@@ -124,7 +114,6 @@ if connected:
                 go = False
         elif to_do=="4":
             to_run = "SELECT * FROM longrates"
-            #print(to_run)
             lab = ["class", "rate"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
@@ -133,7 +122,6 @@ if connected:
                 go = False
         elif to_do=="5":
             to_run = "SELECT * FROM most_profitable"
-            #print(to_run)
             lab = ["class", "rate"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
@@ -142,7 +130,6 @@ if connected:
                 go = False
         elif to_do=="6":
             to_run = "SELECT * FROM return_price"
-            #print(to_run)
             lab = ["vehicle", "class", "client", "cost", "date returned"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
@@ -151,7 +138,6 @@ if connected:
                 go = False
         elif to_do=="7":
             to_run = "SELECT * FROM longest_lease"
-            #print(to_run)
             lab = ["rental", "start date", "end date", "duration", "client"]
             run(lab, to_run)
             again = input("\nWould you like to see another? [y/n]: ")
