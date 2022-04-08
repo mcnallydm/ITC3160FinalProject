@@ -1,3 +1,13 @@
+create or replace view chevy_suvs as
+    -- Shows which vehicles and agencies are/have Chevy SUVs
+    select id, agencies_id as "agency", plate, brand, classes_class as "vehicle class"
+    from vehicles
+    where (brand like('Chevrolet') and classes_class like('SUV'));
+
+select * from chevy_suvs;
+
+----------------------------------------------------------------------
+
 create or replace view rental_history as
     -- Shows the rental history for each vehicle that has been rented before
     select vehicles.id, agencies_id, customers_id_num as "customer id", vehicles.classes_class as "vehicle class", start_date, end_date, return_date
