@@ -1,39 +1,47 @@
-create or replace trigger AGENCY_IDS  
-   before insert on "MCNALLY"."AGENCIES" 
-   for each row 
-begin  
-   if inserting then 
-      if :NEW."ID" is null then 
-         select AGENCY_PKS.nextval into :NEW."ID" from dual; 
-      end if; 
-   end if; 
+create or replace function calc_age (
+    DOB customers.dob%type
+)
+return char as
+age int;
+begin
+    SELECT round(months_between(sysdate , DOB) /12)
+    into age
+    FROM dual;
+    if age>21 then
+        return 'f';
+    else
+        return 't';
+    end if;
 end;
 
 ----------------------------------------------------------------------
 
-create or replace trigger RENTAL_IDS  
-   before insert on "MCNALLY"."RENTALS" 
-   for each row 
-begin  
-   if inserting then 
-      if :NEW."ID" is null then 
-         select RENTAL_PK_IDS.nextval into :NEW."ID" from dual; 
-      end if; 
-   end if; 
+create or replace function calc_months (
+    sd rentals.start_date%type,
+    rd rentals.return_date%type
+)
+return int as
+duration int;
+begin
+    SELECT months_between(rd , sd)
+    into duration
+    FROM dual;
+    return duration;
 end;
 
 ----------------------------------------------------------------------
 
-create or replace trigger VEHICLE_IDS  
-   before insert on "MCNALLY"."VEHICLES" 
-   for each row 
-begin  
-   if inserting then 
-      if :NEW."ID" is null then 
-         select VEHICLE_PK_IDS.nextval into :NEW."ID" from dual; 
-      end if; 
-   end if; 
+create or replace function calc_days (
+    sd rentals.start_date%type,
+    rd rentals.return_date%type
+)
+return int as
+duration int;
+begin
+    SELECT trunc(rd) - sd into duration FROM DUAL;
+    return duration;
 end;
+
 
 ----------------------------------------------------------------------
 
